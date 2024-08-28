@@ -1,0 +1,18 @@
+version: '3'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: uid:gid
+    network_mode: 'host'
+    volumes:
+      - /root/jellyfin/config:/config
+      - /root/jellyfin/cache:/cache
+      - type: bind
+        source: /mnt/external
+        target: /media
+        read_only: true
+    restart: 'unless-stopped'
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
